@@ -2,9 +2,11 @@ package ru.avalon.java.j20.labs.tasks;
 
 import ru.avalon.java.j20.labs.Task;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Задание №3
@@ -52,7 +54,15 @@ public class Task3 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private Collection<String> read(File file) throws IOException {
-        throw new UnsupportedOperationException("Not implement yet!");
+        Collection<String> stringSet = new ArrayList<>();
+        try (Reader reader = new FileReader(file);
+             BufferedReader in = new BufferedReader(reader)) {
+            String line;
+            while ((line = in.readLine()) != null) {
+                stringSet.add(line);
+            }
+            return stringSet;
+        }
     }
 
     /**
@@ -66,6 +76,13 @@ public class Task3 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private void write(File file, Collection<String> collection) throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        try (Writer writer = new PrintWriter(file)) {
+            if (!file.exists()) file.createNewFile();
+            for (String out : collection) {
+                writer.write(out + "\n");
+                writer.flush();
+            }
+        }
+
     }
 }

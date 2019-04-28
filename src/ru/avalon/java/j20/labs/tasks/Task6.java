@@ -3,9 +3,12 @@ package ru.avalon.java.j20.labs.tasks;
 import ru.avalon.java.j20.labs.Task;
 import ru.avalon.java.j20.labs.models.Country;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Задание №6
@@ -21,7 +24,8 @@ public class Task6 implements Task {
     @Override
     public void run() throws IOException {
         File input = new File("assets/countries.txt");
-        Collection<Country> countries = read(input);
+        ArrayList<Country> countries = read(input);
+        int i = countries.size(); // Для точки останова...
 
         /*
          * TODO(Студент): Выполнить задание №6
@@ -47,7 +51,21 @@ public class Task6 implements Task {
      * @return коллекция объектов типа {@link Country}
      * @throws IOException в случае ошибки ввода-вывода.
      */
-    private Collection<Country> read(File file) throws IOException {
-        throw new UnsupportedOperationException("Not implement yet!");
+    private ArrayList<Country> read(File file) throws IOException {
+        Country country = null;
+        ArrayList<Country> countrySet = new ArrayList<>();
+        try (Reader reader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(reader)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                try {
+                    country = Country.valueOf(line);
+                } catch (ParseException e) {
+                    e.printStackTrace(System.err);
+                }
+                countrySet.add(country);
+            }
+        }
+        return countrySet;
     }
 }

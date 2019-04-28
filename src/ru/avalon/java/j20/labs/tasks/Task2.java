@@ -2,8 +2,7 @@ package ru.avalon.java.j20.labs.tasks;
 
 import ru.avalon.java.j20.labs.Task;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Задание №2
@@ -54,7 +53,15 @@ public class Task2 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private String read(File file) throws IOException {
-        throw new UnsupportedOperationException("Not implement yet!");
+        Reader reader = new FileReader(file);
+        StringBuilder builder = new StringBuilder();
+        char[] buffer = new char[512];
+        int len;
+        while ((len = reader.read(buffer)) != -1) {
+            builder.append(buffer, 0, len);
+        }
+        reader.close();
+        return builder.toString();
     }
 
     /**
@@ -66,6 +73,12 @@ public class Task2 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private void write(File file, String text) throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        if(!file.exists()) file.createNewFile();
+        Writer writer = new FileWriter(file);
+        char[] buffer = text.toCharArray();
+        writer.write(buffer);
+        writer.flush();
+        writer.close();
+
     }
 }

@@ -2,8 +2,9 @@ package ru.avalon.java.j20.labs.tasks;
 
 import ru.avalon.java.j20.labs.Task;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * Задание №1
@@ -54,8 +55,20 @@ public class Task1 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private String read(File file) throws IOException {
-        throw new UnsupportedOperationException("Not implement yet!");
+        byte[] buffer = new byte[512];
+        InputStream stream = new FileInputStream(file);
+        ByteArrayOutputStream memory = new ByteArrayOutputStream();
+        int len;
+        while ((len = stream.read(buffer)) != -1) {
+            memory.write(buffer, 0, len);
+        }
+        String result = memory.toString();
+        stream.close();
+        memory.close();
+        return result;
     }
+
+
 
     /**
      * Выполняет запись текстоых данных в файл в двоичном
@@ -66,6 +79,11 @@ public class Task1 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private void write(File file, String text) throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        if (!file.exists()) file.createNewFile();
+        OutputStream output = new FileOutputStream(file);
+        byte[] buffer = text.getBytes(Charset.forName("UTF8"));
+        output.write(buffer);
+        output.flush();
+        output.close();
     }
 }
